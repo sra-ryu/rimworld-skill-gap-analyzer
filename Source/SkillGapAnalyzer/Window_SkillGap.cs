@@ -14,16 +14,45 @@ public class Window_SkillGap : Window
 
     private const float RowHeight = 34f;
     private const float HeaderHeight = 28f;
+    // Keeps Reset/Refresh clear of the window's close (X) button.
+    private const float TopRightInset = 14f;
     private const float RefreshInterval = 1f;
     private const int MaxLevel = 20;
     private const int MaxGroupSize = 50;
 
-    // Kept between openings during a session. Persisted in settings in a later step.
-    private static bool includeSlaves;
-    private static bool includePrisoners;
-    private static bool includeChildren;
-    private static int groupSize = 3;
-    private static SkillDef selectedSkill; // null = all skills
+    // Stored in the mod settings so they survive restarts.
+    private static SkillGapSettings Settings => SkillGapMod.Settings;
+
+    private static bool includeSlaves
+    {
+        get => Settings.includeSlaves;
+        set => Settings.includeSlaves = value;
+    }
+
+    private static bool includePrisoners
+    {
+        get => Settings.includePrisoners;
+        set => Settings.includePrisoners = value;
+    }
+
+    private static bool includeChildren
+    {
+        get => Settings.includeChildren;
+        set => Settings.includeChildren = value;
+    }
+
+    private static int groupSize
+    {
+        get => Settings.groupSize;
+        set => Settings.groupSize = value;
+    }
+
+    // null = all skills
+    private static SkillDef selectedSkill
+    {
+        get => Settings.selectedSkillDefName == null ? null : DefDatabase<SkillDef>.GetNamedSilentFail(Settings.selectedSkillDefName);
+        set => Settings.selectedSkillDefName = value?.defName;
+    }
 
     // Default: biggest gap first.
     private SortKey sortKey = SortKey.Gap;
@@ -85,9 +114,16 @@ public class Window_SkillGap : Window
         float y = inRect.y;
         Text.Font = GameFont.Medium;
         Text.CurFontStyle.fontStyle = FontStyle.Bold;
-        Widgets.Label(new Rect(inRect.x, y, inRect.width - 40f, 32f), "SGA_WindowTitle".Translate());
+        Widgets.Label(new Rect(inRect.x, y, inRect.width - 110f - TopRightInset, 32f), "SGA_WindowTitle".Translate());
         Text.CurFontStyle.fontStyle = FontStyle.Normal;
         Text.Font = GameFont.Small;
+
+        var resetRect = new Rect(inRect.xMax - 100f - TopRightInset, y + 1f, 100f, 30f);
+        if (Widgets.ButtonText(resetRect, "SGA_Reset".Translate()))
+        {
+            ResetView();
+        }
+        TooltipHandler.TipRegion(resetRect, "SGA_ResetTip".Translate());
         y += 40f;
 
         DrawTopBar(new Rect(inRect.x, y, inRect.width, 30f));
@@ -133,7 +169,7 @@ public class Window_SkillGap : Window
     {
         DrawSkillPicker(new Rect(rect.x, rect.y, 330f, rect.height));
 
-        var refreshRect = new Rect(rect.xMax - 100f, rect.y, 100f, rect.height);
+        var refreshRect = new Rect(rect.xMax - 100f - TopRightInset, rect.y, 100f, rect.height);
         if (Widgets.ButtonText(refreshRect, "SGA_Refresh".Translate()))
         {
             Recalculate();
@@ -171,9 +207,21 @@ public class Window_SkillGap : Window
         }
     }
 
+    private void ResetView()
+    {
+        Settings.ResetView();
+        SkillGapMod.Save();
+        sortKey = SortKey.Gap;
+        sortDescending = true;
+        rankScroll = Vector2.zero;
+        scroll = Vector2.zero;
+        Recalculate();
+    }
+
     private void SelectSkill(SkillDef def)
     {
         selectedSkill = def;
+        SkillGapMod.Save();
         rankScroll = Vector2.zero;
         scroll = Vector2.zero;
     }
@@ -241,6 +289,7 @@ public class Window_SkillGap : Window
             includeSlaves = slaves;
             includePrisoners = prisoners;
             includeChildren = children;
+            SkillGapMod.Save();
             Recalculate();
         }
     }
@@ -272,6 +321,7 @@ public class Window_SkillGap : Window
         if (newSize != groupSize)
         {
             groupSize = newSize;
+            SkillGapMod.Save();
             Recalculate();
         }
     }

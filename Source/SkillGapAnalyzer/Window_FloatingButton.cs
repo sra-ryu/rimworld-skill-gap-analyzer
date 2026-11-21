@@ -15,9 +15,7 @@ public class Window_FloatingButton : Window
     private const float EdgeMargin = 12f;
     private const float DragThreshold = 4f;
 
-    // Remembered for the session. Saved in settings in step 5. Null = not placed yet.
-    private static Vector2? savedPosition;
-
+    private bool placed;
     private bool pressed;
     private bool dragging;
     private Vector2 pressPosition;
@@ -55,9 +53,8 @@ public class Window_FloatingButton : Window
     protected override void SetInitialSizeAndPosition()
     {
         // Screen size is only safe to read on the main thread (this can run while a save is loading),
-        // so an unplaced button is positioned on its first draw instead.
-        var pos = savedPosition ?? Vector2.zero;
-        windowRect = new Rect(pos.x, pos.y, ButtonSize, ButtonSize);
+        // so the real position is applied on the first draw instead.
+        windowRect = new Rect(0f, 0f, ButtonSize, ButtonSize);
     }
 
     private static Vector2 Clamp(Vector2 pos) => new Vector2(
@@ -66,11 +63,14 @@ public class Window_FloatingButton : Window
 
     public override void DoWindowContents(Rect inRect)
     {
-        if (savedPosition == null)
+        if (!placed)
         {
-            // Default: top right corner of the game screen.
-            savedPosition = new Vector2(UI.screenWidth - ButtonSize - EdgeMargin, EdgeMargin);
-            windowRect.position = savedPosition.Value;
+            placed = true;
+            var settings = SkillGapMod.Settings;
+            // Saved position (kept on screen in case the resolution changed), else the top right corner.
+            windowRect.position = settings.hasButtonPosition
+                ? Clamp(new Vector2(settings.buttonX, settings.buttonY))
+                : new Vector2(UI.screenWidth - ButtonSize - EdgeMargin, EdgeMargin);
         }
 
         HandleMouse(inRect);
@@ -110,7 +110,11 @@ public class Window_FloatingButton : Window
                 {
                     dragging = false;
                     windowRect.position = Clamp(windowRect.position);
-                    savedPosition = windowRect.position;
+                    var settings = SkillGapMod.Settings;
+                    settings.hasButtonPosition = true;
+                    settings.buttonX = windowRect.position.x;
+                    settings.buttonY = windowRect.position.y;
+                    SkillGapMod.Save();
                 }
                 else
                 {

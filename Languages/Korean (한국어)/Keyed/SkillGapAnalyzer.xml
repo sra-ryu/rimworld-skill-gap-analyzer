@@ -22,4 +22,6 @@
   <SGA_ClickToJump>클릭하면 {0}에게 이동합니다.</SGA_ClickToJump>
   <SGA_AndMore>외 {0}명</SGA_AndMore>
   <SGA_ButtonTip>스킬 격차 분석 열기</SGA_ButtonTip>
+  <SGA_Reset>초기화</SGA_Reset>
+  <SGA_ResetTip>화면을 기본값으로 되돌립니다: 노예/죄수/아이 제외, N = 3, 전체 스킬, 기본 정렬.</SGA_ResetTip>
 </LanguageData>

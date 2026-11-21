@@ -22,4 +22,6 @@
   <SGA_ClickToJump>Click to jump to {0}.</SGA_ClickToJump>
   <SGA_AndMore>+{0} more</SGA_AndMore>
   <SGA_ButtonTip>Open skill gap analysis</SGA_ButtonTip>
+  <SGA_Reset>Reset</SGA_Reset>
+  <SGA_ResetTip>Reset the view to its defaults: no slaves, prisoners or children, N = 3, all skills, default sorting.</SGA_ResetTip>
 </LanguageData>
