@@ -7,7 +7,7 @@
   <supportedVersions>
     <li>1.7</li>
   </supportedVersions>
-  <description>Shows where your colony is weak. Pick a skill, or look at all of them, and see the lowest and highest level, who holds them, and the gap inside your best N pawns.
+  <description>Analyzes your colonists' skills. As you recruit more and more colonists, it gets hard to tell which skills you are short on. You may have plenty of colonists but only one who is good at a certain skill, and if that colonist goes down or is away, nobody can do that work. This mod helps you catch that early. See the gap in skill level between your top N colonists and the average level at a glance, or check every colonist's level for a single skill as a ranking.
 
 Features
 - Per-skill table: lowest, highest, top-N average and gap (works with modded skills too).
@@ -19,7 +19,7 @@ Features
 
 How to read it: a low top-N average means the colony is weak at that skill. A big gap means the best pawns are far apart in level.
 
-콜로니의 약한 부분을 찾아 주는 모드입니다. 스킬을 하나 고르거나 전체를 보고, 스킬별 최저/최고 레벨과 보유자, 상위 N명 안의 격차를 확인할 수 있습니다.
+림월드에서 정착민들의 스킬을 분석해 주는 모드입니다. 게임을 진행하며 정착민을 여러 명 영입하다 보면, 어떤 스킬을 가진 정착민이 부족한지 헷갈릴 때가 있습니다. 정착민은 많은데 특정 스킬을 잘하는 정착민이 한 명뿐이라면, 그 정착민이 쓰러지거나 자리를 비웠을 때 해당 작업을 할 수 없게 될 수도 있습니다. 이 모드로 그런 상황을 미리 막을 수 있습니다. 상위 N명 사이의 스킬 레벨 격차와 평균 레벨을 바로 확인할 수 있고, 스킬별로 모든 정착민의 레벨을 순위로 볼 수도 있습니다.
 
 기능
 - 스킬별 표: 최저, 최고, 상위 N명 평균, 격차 (모드 스킬도 지원).
