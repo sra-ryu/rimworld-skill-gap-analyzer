@@ -21,4 +21,5 @@
   <SGA_NoPawns>No pawns to analyze.</SGA_NoPawns>
   <SGA_ClickToJump>Click to jump to {0}.</SGA_ClickToJump>
   <SGA_AndMore>+{0} more</SGA_AndMore>
+  <SGA_ButtonTip>Open skill gap analysis</SGA_ButtonTip>
 </LanguageData>

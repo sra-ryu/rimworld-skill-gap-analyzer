@@ -21,4 +21,5 @@
   <SGA_NoPawns>분석할 정착민이 없습니다.</SGA_NoPawns>
   <SGA_ClickToJump>클릭하면 {0}에게 이동합니다.</SGA_ClickToJump>
   <SGA_AndMore>외 {0}명</SGA_AndMore>
+  <SGA_ButtonTip>스킬 격차 분석 열기</SGA_ButtonTip>
 </LanguageData>
