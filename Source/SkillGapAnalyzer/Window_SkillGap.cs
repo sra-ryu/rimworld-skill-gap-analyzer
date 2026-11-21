@@ -148,9 +148,12 @@ public class Window_SkillGap : Window
         bool prisoners = includePrisoners;
         bool children = includeChildren;
         Text.Font = GameFont.Small;
-        Widgets.CheckboxLabeled(new Rect(rect.x, rect.y, 150f, rect.height), "SGA_IncludeSlaves".Translate(), ref slaves);
-        Widgets.CheckboxLabeled(new Rect(rect.x + 160f, rect.y, 170f, rect.height), "SGA_IncludePrisoners".Translate(), ref prisoners);
-        Widgets.CheckboxLabeled(new Rect(rect.x + 340f, rect.y, 150f, rect.height), "SGA_IncludeChildren".Translate(), ref children);
+        // Three equal columns spanning the whole row.
+        const float columnGap = 12f;
+        float columnWidth = (rect.width - columnGap * 2f) / 3f;
+        Widgets.CheckboxLabeled(new Rect(rect.x, rect.y, columnWidth, rect.height), "SGA_IncludeSlaves".Translate(), ref slaves);
+        Widgets.CheckboxLabeled(new Rect(rect.x + columnWidth + columnGap, rect.y, columnWidth, rect.height), "SGA_IncludePrisoners".Translate(), ref prisoners);
+        Widgets.CheckboxLabeled(new Rect(rect.x + (columnWidth + columnGap) * 2f, rect.y, columnWidth, rect.height), "SGA_IncludeChildren".Translate(), ref children);
         if (slaves != includeSlaves || prisoners != includePrisoners || children != includeChildren)
         {
             includeSlaves = slaves;
