@@ -17,9 +17,9 @@ public static class SkillGapDebug
         foreach (var combat in new[] { true, false })
         {
             sb.AppendLine(combat ? "-- Combat --" : "-- Life --");
-            foreach (var s in SkillGapCalculator.Compute(combat, pawns).OrderByDescending(x => x.Gap))
+            foreach (var s in SkillGapCalculator.Compute(combat, pawns, 3).OrderByDescending(x => x.TopGap))
             {
-                sb.AppendLine($"{s.def.skillLabel}: min {s.min} ({Names(s.minPawns)}), max {s.max} ({Names(s.maxPawns)}), avg {s.avg:F1}, gap {s.Gap}, n={s.count}");
+                sb.AppendLine($"{s.def.skillLabel}: min {s.min} ({Names(s.minPawns)}), max {s.max} ({Names(s.maxPawns)}), avg {s.avg:F1}, top{s.groupSize} avg {s.topAvg:F1} gap {s.TopGap}, bottom{s.groupSize} avg {s.bottomAvg:F1} gap {s.BottomGap}, n={s.count}");
             }
         }
         Log.Message(sb.ToString());

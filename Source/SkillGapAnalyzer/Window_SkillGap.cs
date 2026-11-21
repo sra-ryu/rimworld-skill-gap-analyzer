@@ -16,11 +16,14 @@ public class Window_SkillGap : Window
     private const float HeaderHeight = 28f;
     private const float RefreshInterval = 1f;
     private const int MaxLevel = 20;
+    private const int MaxGroupSize = 50;
 
     // Kept between openings during a session. Persisted in settings in a later step.
     private static bool includeSlaves;
     private static bool includePrisoners;
     private static bool includeChildren;
+    private static int groupSize = 3;
+    private static bool avgOfTop = true;
     private static bool showCombat = true;
 
     private SortKey sortKey = SortKey.Gap;
@@ -66,7 +69,7 @@ public class Window_SkillGap : Window
     private void Recalculate()
     {
         pawns = SkillGapCalculator.GetPawns(includeSlaves, includePrisoners, includeChildren);
-        stats = SkillGapCalculator.Compute(showCombat, pawns);
+        stats = SkillGapCalculator.Compute(showCombat, pawns, groupSize);
         nextRefreshTime = Time.realtimeSinceStartup + RefreshInterval;
     }
 
@@ -81,6 +84,8 @@ public class Window_SkillGap : Window
         DrawTopBar(new Rect(inRect.x, y, inRect.width, 30f));
         y += 34f;
         DrawOptions(new Rect(inRect.x, y, inRect.width, 24f));
+        y += 28f;
+        DrawGroupSize(new Rect(inRect.x, y, inRect.width, 24f));
         y += 28f;
 
         if (stats.Count == 0)
@@ -155,13 +160,58 @@ public class Window_SkillGap : Window
         }
     }
 
+    private void DrawGroupSize(Rect rect)
+    {
+        Text.Font = GameFont.Small;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        const float labelWidth = 170f;
+        Widgets.Label(new Rect(rect.x, rect.y, labelWidth, rect.height), "SGA_GroupSizeLabel".Translate());
+        TooltipHandler.TipRegion(new Rect(rect.x, rect.y, labelWidth + 100f, rect.height), "SGA_GroupSizeTip".Translate());
+
+        int newSize = groupSize;
+        float x = rect.x + labelWidth;
+        if (Widgets.ButtonText(new Rect(x, rect.y, 26f, rect.height), "-"))
+        {
+            newSize--;
+        }
+        Text.Anchor = TextAnchor.MiddleCenter;
+        Widgets.Label(new Rect(x + 28f, rect.y, 36f, rect.height), groupSize.ToString());
+        Text.Anchor = TextAnchor.MiddleLeft;
+        if (Widgets.ButtonText(new Rect(x + 66f, rect.y, 26f, rect.height), "+"))
+        {
+            newSize++;
+        }
+        Text.Anchor = TextAnchor.UpperLeft;
+
+        // Which group the "average" column shows.
+        var topRect = new Rect(x + 110f, rect.y, 120f, rect.height);
+        var bottomRect = new Rect(topRect.xMax + 6f, rect.y, 120f, rect.height);
+        if (Widgets.ButtonText(topRect, "SGA_AvgTopButton".Translate()) && !avgOfTop)
+        {
+            avgOfTop = true;
+        }
+        if (Widgets.ButtonText(bottomRect, "SGA_AvgBottomButton".Translate()) && avgOfTop)
+        {
+            avgOfTop = false;
+        }
+        Widgets.DrawHighlightSelected(avgOfTop ? topRect : bottomRect);
+        TooltipHandler.TipRegion(new Rect(topRect.x, rect.y, bottomRect.xMax - topRect.x, rect.height), "SGA_AvgTip".Translate());
+
+        newSize = Mathf.Clamp(newSize, 1, MaxGroupSize);
+        if (newSize != groupSize)
+        {
+            groupSize = newSize;
+            Recalculate();
+        }
+    }
+
     // Column rects relative to a row's left edge.
     private static Rect[] Columns(float width)
     {
-        float skill = width * 0.19f;
-        float min = width * 0.25f;
-        float max = width * 0.25f;
-        float avg = width * 0.10f;
+        float skill = width * 0.18f;
+        float min = width * 0.24f;
+        float max = width * 0.24f;
+        float avg = width * 0.12f;
         float gap = width - skill - min - max - avg;
         float x = 0f;
         var result = new Rect[5];
@@ -179,7 +229,7 @@ public class Window_SkillGap : Window
         string[] labels =
         {
             "SGA_ColSkill".Translate(), "SGA_ColLowest".Translate(), "SGA_ColHighest".Translate(),
-            "SGA_ColAverage".Translate(), "SGA_ColGap".Translate()
+            (avgOfTop ? "SGA_ColAvgTop" : "SGA_ColAvgBottom").Translate(), "SGA_ColGap".Translate()
         };
         var keys = new[] { SortKey.Name, SortKey.Min, SortKey.Max, SortKey.Avg, SortKey.Gap };
 
@@ -188,9 +238,17 @@ public class Window_SkillGap : Window
         for (int i = 0; i < 5; i++)
         {
             var cell = new Rect(rect.x + columns[i].x, rect.y, columns[i].width, rect.height);
-            string arrow = sortKey == keys[i] ? (sortDescending ? " ▼" : " ▲") : "";
+            string arrow = sortKey == keys[i] ? (sortDescending ? " \u25BC" : " \u25B2") : "";
             Widgets.Label(new Rect(cell.x + 6f, cell.y, cell.width - 6f, cell.height), labels[i] + arrow);
             Widgets.DrawHighlightIfMouseover(cell);
+            if (keys[i] == SortKey.Gap)
+            {
+                TooltipHandler.TipRegion(cell, "SGA_GroupSizeTip".Translate());
+            }
+            if (keys[i] == SortKey.Avg)
+            {
+                TooltipHandler.TipRegion(cell, "SGA_AvgTip".Translate());
+            }
             if (Widgets.ButtonInvisible(cell))
             {
                 if (sortKey == keys[i])
@@ -215,8 +273,8 @@ public class Window_SkillGap : Window
             SortKey.Name => stats.OrderBy(s => s.def.listOrder),
             SortKey.Min => stats.OrderBy(s => s.min),
             SortKey.Max => stats.OrderBy(s => s.max),
-            SortKey.Avg => stats.OrderBy(s => s.avg),
-            _ => stats.OrderBy(s => s.Gap),
+            SortKey.Avg => stats.OrderBy(AvgValue),
+            _ => stats.OrderBy(GapValue),
         };
         var list = q.ToList();
         if (sortDescending)
@@ -240,18 +298,24 @@ public class Window_SkillGap : Window
         DrawPawnCell(CellRect(row, columns[1]), s.min, s.minPawns);
         DrawPawnCell(CellRect(row, columns[2]), s.max, s.maxPawns);
 
-        Widgets.Label(new Rect(row.x + columns[3].x + 6f, row.y, columns[3].width - 6f, row.height), s.avg.ToString("F1"));
+        Widgets.Label(new Rect(row.x + columns[3].x + 6f, row.y, columns[3].width - 6f, row.height), AvgValue(s).ToString("F1"));
 
         // Gap: number + bar scaled to the max level.
         var gapCell = CellRect(row, columns[4]);
-        Widgets.Label(new Rect(gapCell.x + 6f, gapCell.y, 28f, gapCell.height), s.Gap.ToString());
+        Widgets.Label(new Rect(gapCell.x + 6f, gapCell.y, 28f, gapCell.height), GapValue(s).ToString());
+        TooltipHandler.TipRegion(gapCell, (avgOfTop ? "SGA_GapTipTop" : "SGA_GapTipBottom").Translate(
+            s.groupSize, avgOfTop ? s.max : s.bottomHigh, avgOfTop ? s.topLow : s.min));
         var bar = new Rect(gapCell.x + 38f, gapCell.y + 10f, gapCell.width - 48f, row.height - 20f);
         Widgets.DrawBoxSolid(bar, new Color(1f, 1f, 1f, 0.08f));
-        float fill = Mathf.Clamp01(s.Gap / (float)MaxLevel);
+        float fill = Mathf.Clamp01(GapValue(s) / (float)MaxLevel);
         Widgets.DrawBoxSolid(new Rect(bar.x, bar.y, bar.width * fill, bar.height), GapColor(fill));
 
         Text.Anchor = TextAnchor.UpperLeft;
     }
+
+    private static float AvgValue(SkillStat s) => avgOfTop ? s.topAvg : s.bottomAvg;
+
+    private static int GapValue(SkillStat s) => avgOfTop ? s.TopGap : s.BottomGap;
 
     private static Rect CellRect(Rect row, Rect column) => new Rect(row.x + column.x, row.y, column.width, row.height);
 
