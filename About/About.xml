@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Skill Gap Analyzer</name>
+  <author>comdobby</author>
+  <packageId>comdobby.SkillGapAnalyzer</packageId>
+  <modVersion>0.1.0</modVersion>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>Shows the current skill gap between your colonists: lowest and highest level per skill and who holds them. Combat (Shooting, Melee) and life skills are shown separately. Open it from a draggable icon button.
+
+현재 정착민들의 스킬 갭을 보여주는 모드입니다. 스킬별 최저/최고 레벨과 해당 정착민을 확인하고, 전투(사격, 격투)와 생활 스킬을 따로 볼 수 있습니다. 위치를 옮길 수 있는 아이콘 버튼으로 엽니다.</description>
+</ModMetaData>

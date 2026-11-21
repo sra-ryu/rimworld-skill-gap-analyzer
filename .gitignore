@@ -1,0 +1,6 @@
+.DS_Store
+Source/**/bin/
+Source/**/obj/
+Assemblies/*.dll
+Assemblies/*.pdb
+dist/

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- RimWorld 1.7 (Waylith Engine) runs on .NET 10 -->
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>SkillGapAnalyzer</RootNamespace>
+    <AssemblyName>SkillGapAnalyzer</AssemblyName>
+
+    <!-- Build straight into the mod's Assemblies folder -->
+    <OutputPath>../../Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Override with: dotnet build -p:RimWorldDir=/path/to/RimWorld -->
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(HOME)/Library/Application Support/Steam/steamapps/common/RimWorld</RimWorldDir>
+    <RimWorldManaged>$(RimWorldDir)/RimWorld.app/Contents/MacOS</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Game assemblies are referenced only; never copied into the mod -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)/Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- UnityEngine types (Rect, Vector2, ...) live here in 1.7 -->
+    <Reference Include="UnityStubs">
+      <HintPath>$(RimWorldManaged)/UnityStubs.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
