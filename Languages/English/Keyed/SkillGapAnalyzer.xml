@@ -24,4 +24,11 @@
   <SGA_ButtonTip>Open skill gap analysis</SGA_ButtonTip>
   <SGA_Reset>Reset</SGA_Reset>
   <SGA_ResetTip>Reset the view to its defaults: no slaves, prisoners or children, N = 3, all skills, default sorting.</SGA_ResetTip>
+  <SGA_SettingsTitle>Skill Gap Analyzer</SGA_SettingsTitle>
+  <SGA_OpenMethod>How to open the analysis window</SGA_OpenMethod>
+  <SGA_OpenWithButton>Floating button (default)</SGA_OpenWithButton>
+  <SGA_OpenWithHotkey>Keyboard shortcut</SGA_OpenWithHotkey>
+  <SGA_HotkeyHint>Assign the key in Options > Keyboard config (category: Skill Gap Analyzer). No key is assigned by default.</SGA_HotkeyHint>
+  <SGA_LockButton>Lock button position (disable dragging)</SGA_LockButton>
+  <SGA_ResetButtonPosition>Reset button position (top right)</SGA_ResetButtonPosition>
 </LanguageData>

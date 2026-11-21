@@ -42,11 +42,42 @@ public class Window_FloatingButton : Window
         soundClose = null;
     }
 
-    public static void EnsureOpen()
+    /// <summary>Opens or closes the button so it matches the "open method" setting. Needs a running game.</summary>
+    public static void Sync()
     {
-        if (Find.WindowStack.WindowOfType<Window_FloatingButton>() == null)
+        // Not gated on ProgramState == Playing: FinalizeInit runs while the map is still initializing.
+        if (Current.Game == null || Find.WindowStack == null)
+        {
+            return;
+        }
+
+        var existing = Find.WindowStack.WindowOfType<Window_FloatingButton>();
+        if (SkillGapMod.Settings.useHotkey)
+        {
+            existing?.Close();
+        }
+        else if (existing == null)
         {
             Find.WindowStack.Add(new Window_FloatingButton());
+        }
+    }
+
+    public static void EnsureOpen() => Sync();
+
+    /// <summary>Forgets the saved position; a visible button jumps back to the top right right away.</summary>
+    public static void ResetPosition()
+    {
+        var settings = SkillGapMod.Settings;
+        settings.hasButtonPosition = false;
+        SkillGapMod.Save();
+
+        if (Current.Game != null && Find.WindowStack != null)
+        {
+            var existing = Find.WindowStack.WindowOfType<Window_FloatingButton>();
+            if (existing != null)
+            {
+                existing.placed = false;
+            }
         }
     }
 
@@ -73,6 +104,7 @@ public class Window_FloatingButton : Window
                 : new Vector2(UI.screenWidth - ButtonSize - EdgeMargin, EdgeMargin);
         }
 
+        draggable = !SkillGapMod.Settings.lockButton;
         HandleMouse(inRect);
 
         GUI.color = Mouse.IsOver(inRect) || dragging ? Color.white : new Color(1f, 1f, 1f, 0.8f);

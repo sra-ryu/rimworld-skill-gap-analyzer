@@ -14,6 +14,10 @@ public class SkillGapSettings : ModSettings
     public int groupSize = DefaultGroupSize;
     public string selectedSkillDefName; // null = all skills
 
+    // How the window is opened: the floating button (default) or the keyboard shortcut.
+    public bool useHotkey;
+    public bool lockButton;
+
     // Floating button position (top-left corner). Only valid when hasButtonPosition is true.
     public bool hasButtonPosition;
     public float buttonX;
@@ -26,6 +30,8 @@ public class SkillGapSettings : ModSettings
         Scribe_Values.Look(ref includeChildren, "includeChildren");
         Scribe_Values.Look(ref groupSize, "groupSize", DefaultGroupSize);
         Scribe_Values.Look(ref selectedSkillDefName, "selectedSkill");
+        Scribe_Values.Look(ref useHotkey, "useHotkey");
+        Scribe_Values.Look(ref lockButton, "lockButton");
         Scribe_Values.Look(ref hasButtonPosition, "hasButtonPosition");
         Scribe_Values.Look(ref buttonX, "buttonX");
         Scribe_Values.Look(ref buttonY, "buttonY");

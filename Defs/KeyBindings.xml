@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <KeyBindingCategoryDef>
+    <defName>SGA_Category</defName>
+    <label>Skill Gap Analyzer</label>
+    <description>Shortcut for the Skill Gap Analyzer window.</description>
+    <checkForConflicts>
+      <li>MainTabs</li>
+    </checkForConflicts>
+  </KeyBindingCategoryDef>
+
+  <!-- No default key on purpose: the player assigns one in Options > Keyboard config. -->
+  <KeyBindingDef>
+    <defName>SGA_ToggleWindow</defName>
+    <label>Open/close skill analysis</label>
+    <category>SGA_Category</category>
+  </KeyBindingDef>
+
+</Defs>

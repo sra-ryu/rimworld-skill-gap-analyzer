@@ -24,4 +24,11 @@
   <SGA_ButtonTip>스킬 격차 분석 열기</SGA_ButtonTip>
   <SGA_Reset>초기화</SGA_Reset>
   <SGA_ResetTip>화면을 기본값으로 되돌립니다: 노예/죄수/아이 제외, N = 3, 전체 스킬, 기본 정렬.</SGA_ResetTip>
+  <SGA_SettingsTitle>스킬 격차 분석기</SGA_SettingsTitle>
+  <SGA_OpenMethod>분석 창 여는 방법</SGA_OpenMethod>
+  <SGA_OpenWithButton>플로팅 버튼 (기본)</SGA_OpenWithButton>
+  <SGA_OpenWithHotkey>키보드 단축키</SGA_OpenWithHotkey>
+  <SGA_HotkeyHint>옵션 > 키보드 설정의 "스킬 격차 분석기" 항목에서 키를 지정하세요. 기본적으로 지정된 키는 없습니다.</SGA_HotkeyHint>
+  <SGA_LockButton>버튼 위치 고정 (드래그 비활성화)</SGA_LockButton>
+  <SGA_ResetButtonPosition>버튼 위치 초기화 (오른쪽 위)</SGA_ResetButtonPosition>
 </LanguageData>
