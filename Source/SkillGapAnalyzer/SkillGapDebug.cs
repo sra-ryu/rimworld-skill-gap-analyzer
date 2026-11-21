@@ -14,13 +14,9 @@ public static class SkillGapDebug
         var pawns = SkillGapCalculator.GetPawns(includeSlaves: true, includePrisoners: true, includeChildren: true);
         var sb = new StringBuilder();
         sb.AppendLine($"[Skill Gap Analyzer] {pawns.Count} pawns (incl. slaves/prisoners/children, no babies)");
-        foreach (var combat in new[] { true, false })
+        foreach (var s in SkillGapCalculator.Compute(pawns, 3).OrderByDescending(x => x.TopGap))
         {
-            sb.AppendLine(combat ? "-- Combat --" : "-- Life --");
-            foreach (var s in SkillGapCalculator.Compute(combat, pawns, 3).OrderByDescending(x => x.TopGap))
-            {
-                sb.AppendLine($"{s.def.skillLabel}: min {s.min} ({Names(s.minPawns)}), max {s.max} ({Names(s.maxPawns)}), avg {s.avg:F1}, top{s.groupSize} avg {s.topAvg:F1} gap {s.TopGap}, bottom{s.groupSize} avg {s.bottomAvg:F1} gap {s.BottomGap}, n={s.count}");
-            }
+            sb.AppendLine($"{s.def.skillLabel}: min {s.min} ({Names(s.minPawns)}), max {s.max} ({Names(s.maxPawns)}), top{s.groupSize} avg {s.topAvg:F1} gap {s.TopGap}, n={s.count}");
         }
         Log.Message(sb.ToString());
     }

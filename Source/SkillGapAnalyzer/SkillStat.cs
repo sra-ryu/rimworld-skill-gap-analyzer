@@ -17,16 +17,15 @@ public class SkillStat
 
     /// <summary>Group size actually used (the requested N, capped by the number of pawns).</summary>
     public int groupSize;
+
+    /// <summary>All analyzed pawns for this skill, highest level first.</summary>
+    public List<(Pawn pawn, int level)> ranked = new List<(Pawn pawn, int level)>();
+    /// <summary>Average of the top-N levels.</summary>
     public float topAvg;
-    public float bottomAvg;
 
     /// <summary>Lowest level inside the top-N group (its highest is <see cref="max"/>).</summary>
     public int topLow;
-    /// <summary>Highest level inside the bottom-N group (its lowest is <see cref="min"/>).</summary>
-    public int bottomHigh;
 
     /// <summary>Spread inside the top-N group: highest - lowest of those N pawns.</summary>
     public int TopGap => max - topLow;
-    /// <summary>Spread inside the bottom-N group: highest - lowest of those N pawns.</summary>
-    public int BottomGap => bottomHigh - min;
 }

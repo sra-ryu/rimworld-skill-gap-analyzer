@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <SGA_WindowTitle>스킬 갭</SGA_WindowTitle>
-  <SGA_TabCombat>전투</SGA_TabCombat>
-  <SGA_TabLife>생활</SGA_TabLife>
+  <SGA_WindowTitle>스킬 분석</SGA_WindowTitle>
   <SGA_Refresh>새로고침</SGA_Refresh>
   <SGA_IncludeSlaves>노예 포함</SGA_IncludeSlaves>
   <SGA_IncludePrisoners>죄수 포함</SGA_IncludePrisoners>
   <SGA_IncludeChildren>어린이 포함</SGA_IncludeChildren>
-  <SGA_GroupSizeLabel>상·하위 기준 인원</SGA_GroupSizeLabel>
-  <SGA_GroupSizeTip>평균과 갭은 선택한 상위 N명 또는 하위 N명을 기준으로 계산합니다. 갭 = 그 그룹 안의 최고 레벨 - 최저 레벨. 해당 스킬을 가진 정착민이 N명보다 적으면 N이 자동으로 줄어듭니다.</SGA_GroupSizeTip>
-  <SGA_GapTipTop>상위 {0}명: 최고 {1} - 최저 {2}</SGA_GapTipTop>
-  <SGA_GapTipBottom>하위 {0}명: 최고 {1} - 최저 {2}</SGA_GapTipBottom>
+  <SGA_GroupSizeLabel>상위 기준 인원 (N)</SGA_GroupSizeLabel>
+  <SGA_GroupSizeTip>평균과 갭은 스킬별로 레벨이 높은 상위 N명 기준으로 계산합니다. 갭 = 그 그룹 안의 최고 레벨 - 최저 레벨. 해당 스킬을 가진 정착민이 N명보다 적으면 N이 자동으로 줄어듭니다.</SGA_GroupSizeTip>
+  <SGA_GapTip>상위 {0}명: 최고 {1} - 최저 {2}</SGA_GapTip>
+  <SGA_SkillLabel>스킬 선택</SGA_SkillLabel>
+  <SGA_AllSkills>전체 스킬</SGA_AllSkills>
+  <SGA_RankingNote>레벨 순 전체 정착민. 강조된 정착민이 평균과 갭 계산에 쓰입니다.</SGA_RankingNote>
   <SGA_PawnCount>{0}명 분석</SGA_PawnCount>
   <SGA_ColSkill>스킬</SGA_ColSkill>
   <SGA_ColLowest>최저</SGA_ColLowest>
   <SGA_ColHighest>최고</SGA_ColHighest>
   <SGA_ColAvgTop>상위 평균</SGA_ColAvgTop>
-  <SGA_ColAvgBottom>하위 평균</SGA_ColAvgBottom>
-  <SGA_AvgTopButton>상위 N명 평균</SGA_AvgTopButton>
-  <SGA_AvgBottomButton>하위 N명 평균</SGA_AvgBottomButton>
-  <SGA_AvgTip>평균과 갭 칸에 상위 N명과 하위 N명 중 어느 그룹 기준으로 보여줄지 선택합니다.</SGA_AvgTip>
+  <SGA_AvgTip>스킬별 상위 N명 레벨의 평균입니다. 낮을수록 정착지가 그 스킬에 약합니다.</SGA_AvgTip>
   <SGA_ColGap>갭</SGA_ColGap>
   <SGA_NoPawns>분석할 정착민이 없습니다.</SGA_NoPawns>
   <SGA_ClickToJump>클릭하면 {0}에게 이동합니다.</SGA_ClickToJump>

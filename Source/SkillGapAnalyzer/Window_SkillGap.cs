@@ -7,7 +7,7 @@ using Verse;
 
 namespace SkillGapAnalyzer;
 
-/// <summary>Standalone (non-tab) window showing the current skill gap, split into combat and life skills.</summary>
+/// <summary>Standalone (non-tab) window showing the current skill gap, pick one skill or see them all.</summary>
 public class Window_SkillGap : Window
 {
     private enum SortKey { Name, Min, Max, Avg, Gap }
@@ -23,12 +23,13 @@ public class Window_SkillGap : Window
     private static bool includePrisoners;
     private static bool includeChildren;
     private static int groupSize = 3;
-    private static bool avgOfTop = true;
-    private static bool showCombat = true;
+    private static SkillDef selectedSkill; // null = all skills
 
+    // Default: biggest gap first.
     private SortKey sortKey = SortKey.Gap;
     private bool sortDescending = true;
     private Vector2 scroll;
+    private Vector2 rankScroll;
     private float nextRefreshTime;
     private List<Pawn> pawns = new List<Pawn>();
     private List<SkillStat> stats = new List<SkillStat>();
@@ -45,7 +46,6 @@ public class Window_SkillGap : Window
         absorbInputAroundWindow = false;
         preventCameraMotion = false;
         forcePause = false;
-        optionalTitle = "SGA_WindowTitle".Translate();
     }
 
     public static void Toggle()
@@ -69,7 +69,7 @@ public class Window_SkillGap : Window
     private void Recalculate()
     {
         pawns = SkillGapCalculator.GetPawns(includeSlaves, includePrisoners, includeChildren);
-        stats = SkillGapCalculator.Compute(showCombat, pawns, groupSize);
+        stats = SkillGapCalculator.Compute(pawns, groupSize);
         nextRefreshTime = Time.realtimeSinceStartup + RefreshInterval;
     }
 
@@ -80,13 +80,22 @@ public class Window_SkillGap : Window
             Recalculate();
         }
 
+        // Title is drawn inside the content area (not via optionalTitle) so the rows can sit right under it
+        // without being clipped by the window's content rect.
         float y = inRect.y;
+        Text.Font = GameFont.Medium;
+        Text.CurFontStyle.fontStyle = FontStyle.Bold;
+        Widgets.Label(new Rect(inRect.x, y, inRect.width - 40f, 32f), "SGA_WindowTitle".Translate());
+        Text.CurFontStyle.fontStyle = FontStyle.Normal;
+        Text.Font = GameFont.Small;
+        y += 40f;
+
         DrawTopBar(new Rect(inRect.x, y, inRect.width, 30f));
-        y += 34f;
+        y += 42f;
         DrawOptions(new Rect(inRect.x, y, inRect.width, 24f));
-        y += 28f;
+        y += 36f;
         DrawGroupSize(new Rect(inRect.x, y, inRect.width, 24f));
-        y += 28f;
+        y += 36f;
 
         if (stats.Count == 0)
         {
@@ -99,6 +108,15 @@ public class Window_SkillGap : Window
         var columns = Columns(inRect.width - 16f);
         DrawHeader(new Rect(inRect.x, y, inRect.width - 16f, HeaderHeight), columns);
         y += HeaderHeight;
+
+        var selectedStat = selectedSkill == null ? null : stats.FirstOrDefault(s => s.def == selectedSkill);
+        if (selectedStat != null)
+        {
+            DrawRow(new Rect(inRect.x, y, inRect.width - 16f, RowHeight), selectedStat, columns, false);
+            y += RowHeight + 8f;
+            DrawRanking(new Rect(inRect.x, y, inRect.width, inRect.yMax - y), selectedStat);
+            return;
+        }
 
         var outRect = new Rect(inRect.x, y, inRect.width, inRect.yMax - y);
         var viewRect = new Rect(0f, 0f, outRect.width - 16f, stats.Count * RowHeight);
@@ -113,21 +131,7 @@ public class Window_SkillGap : Window
 
     private void DrawTopBar(Rect rect)
     {
-        var combatRect = new Rect(rect.x, rect.y, 110f, rect.height);
-        var lifeRect = new Rect(combatRect.xMax + 6f, rect.y, 110f, rect.height);
-        if (Widgets.ButtonText(combatRect, "SGA_TabCombat".Translate()) && !showCombat)
-        {
-            showCombat = true;
-            scroll = Vector2.zero;
-            Recalculate();
-        }
-        if (Widgets.ButtonText(lifeRect, "SGA_TabLife".Translate()) && showCombat)
-        {
-            showCombat = false;
-            scroll = Vector2.zero;
-            Recalculate();
-        }
-        Widgets.DrawHighlightSelected(showCombat ? combatRect : lifeRect);
+        DrawSkillPicker(new Rect(rect.x, rect.y, 330f, rect.height));
 
         var refreshRect = new Rect(rect.xMax - 100f, rect.y, 100f, rect.height);
         if (Widgets.ButtonText(refreshRect, "SGA_Refresh".Translate()))
@@ -140,6 +144,84 @@ public class Window_SkillGap : Window
         Widgets.Label(new Rect(refreshRect.x - 206f, rect.y, 200f, rect.height), "SGA_PawnCount".Translate(pawns.Count));
         Text.Anchor = TextAnchor.UpperLeft;
         GUI.color = Color.white;
+    }
+
+    private void DrawSkillPicker(Rect rect)
+    {
+        Text.Font = GameFont.Small;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        const float labelWidth = 90f;
+        Widgets.Label(new Rect(rect.x, rect.y, labelWidth, rect.height), "SGA_SkillLabel".Translate());
+        Text.Anchor = TextAnchor.UpperLeft;
+
+        string current = selectedSkill == null ? (string)"SGA_AllSkills".Translate() : selectedSkill.skillLabel.CapitalizeFirst();
+        var buttonRect = new Rect(rect.x + labelWidth, rect.y, 230f, rect.height);
+        if (Widgets.ButtonText(buttonRect, current + "  \u25BE"))
+        {
+            var options = new List<FloatMenuOption>
+            {
+                new FloatMenuOption("SGA_AllSkills".Translate(), () => SelectSkill(null))
+            };
+            foreach (var s in stats.OrderBy(x => x.def.listOrder))
+            {
+                var def = s.def;
+                options.Add(new FloatMenuOption(def.skillLabel.CapitalizeFirst(), () => SelectSkill(def)));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+    }
+
+    private void SelectSkill(SkillDef def)
+    {
+        selectedSkill = def;
+        rankScroll = Vector2.zero;
+        scroll = Vector2.zero;
+    }
+
+    // Single-skill view: every pawn ranked by level, the pawns used for average/gap highlighted.
+    private void DrawRanking(Rect rect, SkillStat s)
+    {
+        Text.Font = GameFont.Small;
+        GUI.color = Color.gray;
+        Widgets.Label(new Rect(rect.x, rect.y, rect.width, 24f), "SGA_RankingNote".Translate());
+        GUI.color = Color.white;
+
+        const float rowHeight = 28f;
+        var outRect = new Rect(rect.x, rect.y + 26f, rect.width, rect.height - 26f);
+        var viewRect = new Rect(0f, 0f, outRect.width - 16f, s.ranked.Count * rowHeight);
+        Widgets.BeginScrollView(outRect, ref rankScroll, viewRect);
+        for (int i = 0; i < s.ranked.Count; i++)
+        {
+            var (pawn, level) = s.ranked[i];
+            var row = new Rect(0f, i * rowHeight, viewRect.width, rowHeight);
+            bool inGroup = i < s.groupSize;
+            if (inGroup)
+            {
+                Widgets.DrawBoxSolid(row, new Color(0.35f, 0.7f, 0.4f, 0.18f));
+            }
+            else if (i % 2 == 1)
+            {
+                Widgets.DrawLightHighlight(row);
+            }
+
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(new Rect(row.x + 6f, row.y, 30f, row.height), (i + 1).ToString());
+            Widgets.Label(new Rect(row.x + 40f, row.y, 200f, row.height), pawn.LabelShortCap.Truncate(200f));
+            Widgets.Label(new Rect(row.x + 250f, row.y, 30f, row.height), level.ToString());
+            var bar = new Rect(row.x + 286f, row.y + 8f, row.width - 296f, row.height - 16f);
+            Widgets.DrawBoxSolid(bar, new Color(1f, 1f, 1f, 0.08f));
+            Widgets.DrawBoxSolid(new Rect(bar.x, bar.y, bar.width * Mathf.Clamp01(level / (float)MaxLevel), bar.height),
+                new Color(0.55f, 0.65f, 0.85f));
+            Text.Anchor = TextAnchor.UpperLeft;
+
+            Widgets.DrawHighlightIfMouseover(row);
+            TooltipHandler.TipRegion(row, "SGA_ClickToJump".Translate(pawn.LabelShort));
+            if (Widgets.ButtonInvisible(row))
+            {
+                CameraJumper.TryJumpAndSelect(pawn);
+            }
+        }
+        Widgets.EndScrollView();
     }
 
     private void DrawOptions(Rect rect)
@@ -186,20 +268,6 @@ public class Window_SkillGap : Window
         }
         Text.Anchor = TextAnchor.UpperLeft;
 
-        // Which group the "average" column shows.
-        var topRect = new Rect(x + 110f, rect.y, 120f, rect.height);
-        var bottomRect = new Rect(topRect.xMax + 6f, rect.y, 120f, rect.height);
-        if (Widgets.ButtonText(topRect, "SGA_AvgTopButton".Translate()) && !avgOfTop)
-        {
-            avgOfTop = true;
-        }
-        if (Widgets.ButtonText(bottomRect, "SGA_AvgBottomButton".Translate()) && avgOfTop)
-        {
-            avgOfTop = false;
-        }
-        Widgets.DrawHighlightSelected(avgOfTop ? topRect : bottomRect);
-        TooltipHandler.TipRegion(new Rect(topRect.x, rect.y, bottomRect.xMax - topRect.x, rect.height), "SGA_AvgTip".Translate());
-
         newSize = Mathf.Clamp(newSize, 1, MaxGroupSize);
         if (newSize != groupSize)
         {
@@ -232,7 +300,7 @@ public class Window_SkillGap : Window
         string[] labels =
         {
             "SGA_ColSkill".Translate(), "SGA_ColLowest".Translate(), "SGA_ColHighest".Translate(),
-            (avgOfTop ? "SGA_ColAvgTop" : "SGA_ColAvgBottom").Translate(), "SGA_ColGap".Translate()
+            "SGA_ColAvgTop".Translate(), "SGA_ColGap".Translate()
         };
         var keys = new[] { SortKey.Name, SortKey.Min, SortKey.Max, SortKey.Avg, SortKey.Gap };
 
@@ -306,8 +374,7 @@ public class Window_SkillGap : Window
         // Gap: number + bar scaled to the max level.
         var gapCell = CellRect(row, columns[4]);
         Widgets.Label(new Rect(gapCell.x + 6f, gapCell.y, 28f, gapCell.height), GapValue(s).ToString());
-        TooltipHandler.TipRegion(gapCell, (avgOfTop ? "SGA_GapTipTop" : "SGA_GapTipBottom").Translate(
-            s.groupSize, avgOfTop ? s.max : s.bottomHigh, avgOfTop ? s.topLow : s.min));
+        TooltipHandler.TipRegion(gapCell, "SGA_GapTip".Translate(s.groupSize, s.max, s.topLow));
         var bar = new Rect(gapCell.x + 38f, gapCell.y + 10f, gapCell.width - 48f, row.height - 20f);
         Widgets.DrawBoxSolid(bar, new Color(1f, 1f, 1f, 0.08f));
         float fill = Mathf.Clamp01(GapValue(s) / (float)MaxLevel);
@@ -316,9 +383,9 @@ public class Window_SkillGap : Window
         Text.Anchor = TextAnchor.UpperLeft;
     }
 
-    private static float AvgValue(SkillStat s) => avgOfTop ? s.topAvg : s.bottomAvg;
+    private static float AvgValue(SkillStat s) => s.topAvg;
 
-    private static int GapValue(SkillStat s) => avgOfTop ? s.TopGap : s.BottomGap;
+    private static int GapValue(SkillStat s) => s.TopGap;
 
     private static Rect CellRect(Rect row, Rect column) => new Rect(row.x + column.x, row.y, column.width, row.height);
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -6,11 +7,6 @@ namespace SkillGapAnalyzer;
 
 public static class SkillGapCalculator
 {
-    // Combat group = Shooting + Melee. Everything else (incl. modded skills) is "life".
-    private static readonly HashSet<string> CombatSkills = new HashSet<string> { "Shooting", "Melee" };
-
-    public static bool IsCombat(SkillDef def) => CombatSkills.Contains(def.defName);
-
     /// <summary>
     /// Free colonists, optionally plus slaves and prisoners, across all maps and caravans.
     /// Babies are always excluded; children only when <paramref name="includeChildren"/> is set.
@@ -55,20 +51,15 @@ public static class SkillGapCalculator
     }
 
     /// <summary>
-    /// Per-skill min/max/avg/gap for the combat or life group. Reads current levels every call.
-    /// Average and gap are computed per group: the top N pawns or the bottom N pawns of that skill
-    /// (gap = highest - lowest level inside the chosen group). N is capped by the number of pawns.
+    /// Per-skill min/max/avg/gap for every skill (including modded ones). Reads current levels every call.
+    /// Average and gap are computed for the top N pawns of each skill
+    /// (gap = highest - lowest level inside that group). N is capped by the number of pawns.
     /// </summary>
-    public static List<SkillStat> Compute(bool combat, List<Pawn> pawns, int groupSize)
+    public static List<SkillStat> Compute(List<Pawn> pawns, int groupSize)
     {
         var stats = new List<SkillStat>();
         foreach (var def in DefDatabase<SkillDef>.AllDefsListForReading)
         {
-            if (IsCombat(def) != combat)
-            {
-                continue;
-            }
-
             var stat = new SkillStat { def = def, min = int.MaxValue, max = int.MinValue };
             long sum = 0;
             var levels = new List<int>();
@@ -85,6 +76,7 @@ public static class SkillGapCalculator
                 stat.count++;
                 sum += level;
                 levels.Add(level);
+                stat.ranked.Add((pawn, level));
 
                 if (level < stat.min)
                 {
@@ -112,21 +104,18 @@ public static class SkillGapCalculator
                 continue;
             }
             stat.avg = (float)sum / stat.count;
+            stat.ranked = stat.ranked.OrderByDescending(r => r.level).ThenBy(r => r.pawn.LabelShort).ToList();
 
             levels.Sort();
             int n = System.Math.Max(1, System.Math.Min(groupSize, stat.count));
             stat.groupSize = n;
-            float bottom = 0f;
             float top = 0f;
             for (int i = 0; i < n; i++)
             {
-                bottom += levels[i];
                 top += levels[levels.Count - 1 - i];
             }
-            stat.bottomAvg = bottom / n;
             stat.topAvg = top / n;
             stat.topLow = levels[levels.Count - n];
-            stat.bottomHigh = levels[n - 1];
             stats.Add(stat);
         }
         return stats;

@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <SGA_WindowTitle>Skill gap</SGA_WindowTitle>
-  <SGA_TabCombat>Combat</SGA_TabCombat>
-  <SGA_TabLife>Life</SGA_TabLife>
+  <SGA_WindowTitle>Skill analysis</SGA_WindowTitle>
   <SGA_Refresh>Refresh</SGA_Refresh>
   <SGA_IncludeSlaves>Include slaves</SGA_IncludeSlaves>
   <SGA_IncludePrisoners>Include prisoners</SGA_IncludePrisoners>
   <SGA_IncludeChildren>Include children</SGA_IncludeChildren>
-  <SGA_GroupSizeLabel>Top/bottom group size</SGA_GroupSizeLabel>
-  <SGA_GroupSizeTip>Average and gap are calculated for the N highest or N lowest pawns (your choice). Gap = highest - lowest level inside that group. N is capped by the number of pawns that have the skill.</SGA_GroupSizeTip>
-  <SGA_GapTipTop>Top {0} pawns: highest {1} - lowest {2}</SGA_GapTipTop>
-  <SGA_GapTipBottom>Bottom {0} pawns: highest {1} - lowest {2}</SGA_GapTipBottom>
+  <SGA_GroupSizeLabel>Top group size (N)</SGA_GroupSizeLabel>
+  <SGA_GroupSizeTip>Average and gap are calculated for the N pawns with the highest level in each skill. Gap = highest - lowest level inside that group. N is capped by the number of pawns that have the skill.</SGA_GroupSizeTip>
+  <SGA_GapTip>Top {0} pawns: highest {1} - lowest {2}</SGA_GapTip>
+  <SGA_SkillLabel>Skill</SGA_SkillLabel>
+  <SGA_AllSkills>All skills</SGA_AllSkills>
+  <SGA_RankingNote>All pawns by level. Highlighted pawns are used for the average and gap.</SGA_RankingNote>
   <SGA_PawnCount>{0} pawns analyzed</SGA_PawnCount>
   <SGA_ColSkill>Skill</SGA_ColSkill>
   <SGA_ColLowest>Lowest</SGA_ColLowest>
   <SGA_ColHighest>Highest</SGA_ColHighest>
   <SGA_ColAvgTop>Top avg</SGA_ColAvgTop>
-  <SGA_ColAvgBottom>Bottom avg</SGA_ColAvgBottom>
-  <SGA_AvgTopButton>Top N average</SGA_AvgTopButton>
-  <SGA_AvgBottomButton>Bottom N average</SGA_AvgBottomButton>
-  <SGA_AvgTip>Choose which group the average and gap columns use: the top N or the bottom N pawns.</SGA_AvgTip>
+  <SGA_AvgTip>Average of the top N levels of the skill. Lower means the colony is weaker at it.</SGA_AvgTip>
   <SGA_ColGap>Gap</SGA_ColGap>
   <SGA_NoPawns>No pawns to analyze.</SGA_NoPawns>
   <SGA_ClickToJump>Click to jump to {0}.</SGA_ClickToJump>
