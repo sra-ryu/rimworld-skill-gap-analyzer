@@ -11,9 +11,9 @@ public static class SkillGapDebug
     [DebugAction("Skill Gap Analyzer", "Log skill gaps", allowedGameStates = AllowedGameStates.Playing)]
     private static void LogSkillGaps()
     {
-        var pawns = SkillGapCalculator.GetPawns(includeSlaves: true, includePrisoners: true);
+        var pawns = SkillGapCalculator.GetPawns(includeSlaves: true, includePrisoners: true, includeChildren: true);
         var sb = new StringBuilder();
-        sb.AppendLine($"[Skill Gap Analyzer] {pawns.Count} pawns (incl. slaves/prisoners)");
+        sb.AppendLine($"[Skill Gap Analyzer] {pawns.Count} pawns (incl. slaves/prisoners/children, no babies)");
         foreach (var combat in new[] { true, false })
         {
             sb.AppendLine(combat ? "-- Combat --" : "-- Life --");
@@ -24,6 +24,9 @@ public static class SkillGapDebug
         }
         Log.Message(sb.ToString());
     }
+
+    [DebugAction("Skill Gap Analyzer", "Open skill gap window", allowedGameStates = AllowedGameStates.Playing)]
+    private static void OpenWindow() => Window_SkillGap.Toggle();
 
     private static string Names(System.Collections.Generic.List<Pawn> list) =>
         string.Join(", ", list.Select(p => p.LabelShort));

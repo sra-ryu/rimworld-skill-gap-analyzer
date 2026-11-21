@@ -11,8 +11,11 @@ public static class SkillGapCalculator
 
     public static bool IsCombat(SkillDef def) => CombatSkills.Contains(def.defName);
 
-    /// <summary>Free colonists, optionally plus slaves and prisoners, across all maps and caravans.</summary>
-    public static List<Pawn> GetPawns(bool includeSlaves, bool includePrisoners)
+    /// <summary>
+    /// Free colonists, optionally plus slaves and prisoners, across all maps and caravans.
+    /// Babies are always excluded; children only when <paramref name="includeChildren"/> is set.
+    /// </summary>
+    public static List<Pawn> GetPawns(bool includeSlaves, bool includePrisoners, bool includeChildren)
     {
         var result = new List<Pawn>();
         var seen = new HashSet<Pawn>();
@@ -21,7 +24,18 @@ public static class SkillGapCalculator
         {
             foreach (var p in list)
             {
-                if (p?.skills != null && !p.Dead && seen.Add(p))
+                if (p?.skills == null || p.Dead)
+                {
+                    continue;
+                }
+
+                var stage = p.DevelopmentalStage;
+                if (stage.Newborn() || stage.Baby() || (stage.Child() && !includeChildren))
+                {
+                    continue;
+                }
+
+                if (seen.Add(p))
                 {
                     result.Add(p);
                 }
