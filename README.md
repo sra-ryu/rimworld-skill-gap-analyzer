@@ -63,7 +63,7 @@ docs/screenshots/              Screenshots
 
 ## Installation
 
-Subscribe on the Steam Workshop.
+Subscribe on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3843690558).
 
 ## Development
 
@@ -140,7 +140,7 @@ docs/screenshots/              스크린샷
 
 ## 설치 방법
 
-Steam 창작마당에서 구독하세요.
+[Steam 창작마당](https://steamcommunity.com/sharedfiles/filedetails/?id=3843690558)에서 구독하세요.
 
 ## 개발
 
