@@ -6,7 +6,7 @@ A RimWorld mod that analyzes your colonists' skills. As you recruit more and mor
 
 ## Features
 
-- **Per-skill table**: Lowest, highest, top-N average and gap for every skill. Modded skills are included automatically.
+- **Per-skill table**: Top 3 pawns (hover for full name, click to jump), top-N average and gap for every skill. Modded skills are included automatically.
 - **Single skill view**: Pick one skill from the dropdown to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them.
 - **Top-N focus**: Only your best N pawns matter for a skill, so a low top-N average means the colony is weak at it, and a big gap means the best pawns are far apart in level.
 - **Who is counted**: Free colonists, plus optional slaves, prisoners and children. Babies are always left out, and pawns who can never do a skill are ignored for it.
@@ -83,7 +83,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 주요 기능
 
-- **스킬별 표**: 모든 스킬의 최저, 최고, 상위 N명 평균, 격차를 보여줍니다. 모드 스킬도 자동으로 포함됩니다.
+- **스킬별 표**: 모든 스킬의 상위 3명(마우스를 올리면 전체 이름, 클릭하면 해당 정착민으로 이동), 상위 N명 평균, 격차를 보여줍니다. 모드 스킬도 자동으로 포함됩니다.
 - **스킬 하나만 보기**: 드롭다운에서 스킬을 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다.
 - **상위 N명 중심**: 스킬은 가장 잘하는 N명만 중요하므로, 상위 N명 평균이 낮으면 콜로니가 그 스킬에 약하다는 뜻이고 격차가 크면 상위 정착민끼리 레벨 차이가 크다는 뜻입니다.
 - **집계 대상**: 자유 정착민이 기본이고, 노예, 죄수, 아이를 선택해서 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 정착민은 그 스킬에서 빠집니다.
