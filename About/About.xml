@@ -3,14 +3,14 @@
   <name>Skill Gap Analyzer</name>
   <author>comdobby</author>
   <packageId>comdobby.SkillGapAnalyzer</packageId>
-  <modVersion>0.1.0</modVersion>
+  <modVersion>1.0.1</modVersion>
   <supportedVersions>
     <li>1.7</li>
   </supportedVersions>
   <description>Analyzes your colonists' skills. As you recruit more and more colonists, it gets hard to tell which skills you are short on. You may have plenty of colonists but only one who is good at a certain skill, and if that colonist goes down or is away, nobody can do that work. This mod helps you catch that early. See the gap in skill level between your top N colonists and the average level at a glance, or check every colonist's level for a single skill as a ranking.
 
 Features
-- Per-skill table: lowest, highest, top-N average and gap (works with modded skills too).
+- Per-skill table: top 3 pawns, top-N average and gap (works with modded skills too).
 - Pick one skill to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them.
 - Optionally include slaves, prisoners and children. Babies are always left out, and pawns who can never do a skill are ignored for it.
 - With the mod enabled, the analysis icon button appears at the top right of the screen by default. You can drag it anywhere you like. No keyboard shortcut is assigned by default; set one yourself in Options > Keyboard config.
@@ -22,7 +22,7 @@ How to read it: a low top-N average means the colony is weak at that skill. A bi
 림월드에서 정착민들의 스킬을 분석해 주는 모드입니다. 게임을 진행하며 정착민을 여러 명 영입하다 보면, 어떤 스킬을 가진 정착민이 부족한지 헷갈릴 때가 있습니다. 정착민은 많은데 특정 스킬을 잘하는 정착민이 한 명뿐이라면, 그 정착민이 쓰러지거나 자리를 비웠을 때 해당 작업을 할 수 없게 될 수도 있습니다. 이 모드로 그런 상황을 미리 막을 수 있습니다. 상위 N명 사이의 스킬 레벨 격차와 평균 레벨을 바로 확인할 수 있고, 스킬별로 모든 정착민의 레벨을 순위로 볼 수도 있습니다.
 
 기능
-- 스킬별 표: 최저, 최고, 상위 N명 평균, 격차 (모드 스킬도 지원).
+- 스킬별 표: 상위 3명, 상위 N명 평균, 격차 (모드 스킬도 지원).
 - 스킬을 하나 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다.
 - 노예, 죄수, 아이를 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 정착민은 그 스킬에서 빠집니다.
 - 모드를 적용하면 분석 아이콘이 기본적으로 화면 오른쪽 위에 표시됩니다. 아이콘을 드래그해서 원하는 곳으로 옮길 수 있습니다. 기본 단축키는 없고, 옵션 > 키보드 설정에서 직접 지정합니다.
