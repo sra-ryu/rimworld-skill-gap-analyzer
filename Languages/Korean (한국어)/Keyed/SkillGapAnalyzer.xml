@@ -11,6 +11,9 @@
   <SGA_SkillLabel>스킬 선택</SGA_SkillLabel>
   <SGA_AllSkills>전체 스킬</SGA_AllSkills>
   <SGA_RankingNote>레벨 순 전체 정착민. 강조된 정착민이 평균과 갭 계산에 쓰입니다.</SGA_RankingNote>
+  <SGA_MinLevelLabel>최소 레벨</SGA_MinLevelLabel>
+  <SGA_MinLevelTip>이 스킬 레벨이 이 값 이상인 정착민만 표시합니다. 0이면 모두 표시합니다. 평균과 갭에는 영향을 주지 않습니다. 열정이 있으면 이름이 파란색 + 불꽃 아이콘으로 표시됩니다: 열정 하나는 연한 파랑 + 불꽃 1개 아이콘, 열정 둘은 진한 파랑 + 불꽃 2개짜리 아이콘.</SGA_MinLevelTip>
+  <SGA_NoPawnsAtLevel>레벨 {0} 이상인 정착민이 없습니다.</SGA_NoPawnsAtLevel>
   <SGA_PawnCount>{0}명 분석</SGA_PawnCount>
   <SGA_ColSkill>스킬</SGA_ColSkill>
   <SGA_ColTop>상위 {0}명</SGA_ColTop>
@@ -21,7 +24,7 @@
   <SGA_ClickToJump>클릭하면 {0}에게 이동합니다.</SGA_ClickToJump>
   <SGA_ButtonTip>스킬 격차 분석 열기</SGA_ButtonTip>
   <SGA_Reset>초기화</SGA_Reset>
-  <SGA_ResetTip>화면을 기본값으로 되돌립니다: 노예/죄수/아이 제외, N = 3, 전체 스킬, 기본 정렬.</SGA_ResetTip>
+  <SGA_ResetTip>화면을 기본값으로 되돌립니다: 노예/죄수/아이 제외, N = 3, 최소 레벨 0, 전체 스킬, 기본 정렬.</SGA_ResetTip>
   <SGA_SettingsTitle>스킬 격차 분석기</SGA_SettingsTitle>
   <SGA_OpenMethod>분석 창 여는 방법</SGA_OpenMethod>
   <SGA_OpenWithButton>플로팅 버튼 (기본)</SGA_OpenWithButton>

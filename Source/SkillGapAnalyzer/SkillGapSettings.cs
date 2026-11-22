@@ -13,6 +13,7 @@ public class SkillGapSettings : ModSettings
     public bool includeChildren;
     public int groupSize = DefaultGroupSize;
     public string selectedSkillDefName; // null = all skills
+    public int minLevel; // single-skill view: only list pawns at or above this level
 
     // How the window is opened: the floating button (default) or the keyboard shortcut.
     public bool useHotkey;
@@ -30,6 +31,7 @@ public class SkillGapSettings : ModSettings
         Scribe_Values.Look(ref includeChildren, "includeChildren");
         Scribe_Values.Look(ref groupSize, "groupSize", DefaultGroupSize);
         Scribe_Values.Look(ref selectedSkillDefName, "selectedSkill");
+        Scribe_Values.Look(ref minLevel, "minLevel");
         Scribe_Values.Look(ref useHotkey, "useHotkey");
         Scribe_Values.Look(ref lockButton, "lockButton");
         Scribe_Values.Look(ref hasButtonPosition, "hasButtonPosition");
@@ -45,5 +47,6 @@ public class SkillGapSettings : ModSettings
         includeChildren = false;
         groupSize = DefaultGroupSize;
         selectedSkillDefName = null;
+        minLevel = 0;
     }
 }

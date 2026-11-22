@@ -11,6 +11,9 @@
   <SGA_SkillLabel>Skill</SGA_SkillLabel>
   <SGA_AllSkills>All skills</SGA_AllSkills>
   <SGA_RankingNote>All pawns by level. Highlighted pawns are used for the average and gap.</SGA_RankingNote>
+  <SGA_MinLevelLabel>Minimum level</SGA_MinLevelLabel>
+  <SGA_MinLevelTip>Only list pawns whose level in this skill is at or above this value. 0 shows everyone. The average and gap are not affected. Pawns with a passion get a blue name and flame icons: light blue and a single-flame icon for minor, strong blue and the double-flame icon for major.</SGA_MinLevelTip>
+  <SGA_NoPawnsAtLevel>No pawns at level {0} or higher.</SGA_NoPawnsAtLevel>
   <SGA_PawnCount>{0} pawns analyzed</SGA_PawnCount>
   <SGA_ColSkill>Skill</SGA_ColSkill>
   <SGA_ColTop>Top {0}</SGA_ColTop>
@@ -21,7 +24,7 @@
   <SGA_ClickToJump>Click to jump to {0}.</SGA_ClickToJump>
   <SGA_ButtonTip>Open skill gap analysis</SGA_ButtonTip>
   <SGA_Reset>Reset</SGA_Reset>
-  <SGA_ResetTip>Reset the view to its defaults: no slaves, prisoners or children, N = 3, all skills, default sorting.</SGA_ResetTip>
+  <SGA_ResetTip>Reset the view to its defaults: no slaves, prisoners or children, N = 3, minimum level 0, all skills, default sorting.</SGA_ResetTip>
   <SGA_SettingsTitle>Skill Gap Analyzer</SGA_SettingsTitle>
   <SGA_OpenMethod>How to open the analysis window</SGA_OpenMethod>
   <SGA_OpenWithButton>Floating button (default)</SGA_OpenWithButton>

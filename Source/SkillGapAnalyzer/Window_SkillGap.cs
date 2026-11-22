@@ -49,6 +49,12 @@ public class Window_SkillGap : Window
         set => Settings.groupSize = value;
     }
 
+    private static int minLevel
+    {
+        get => Settings.minLevel;
+        set => Settings.minLevel = value;
+    }
+
     // null = all skills
     private static SkillDef selectedSkill
     {
@@ -228,19 +234,39 @@ public class Window_SkillGap : Window
         scroll = Vector2.zero;
     }
 
-    // Single-skill view: every pawn ranked by level, the pawns used for average/gap highlighted.
+    // Single-skill view: pawns ranked by level (only those at or above the chosen minimum),
+    // the pawns used for average/gap highlighted, passion shown by name colour and flame icons.
     private void DrawRanking(Rect rect, SkillStat s)
     {
         Text.Font = GameFont.Small;
+        DrawMinLevel(new Rect(rect.x, rect.y, rect.width, 24f));
+
         GUI.color = Color.gray;
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width, 24f), "SGA_RankingNote".Translate());
+        Widgets.Label(new Rect(rect.x, rect.y + 28f, rect.width, 24f), "SGA_RankingNote".Translate());
         GUI.color = Color.white;
 
+        // ranked is sorted by level, so the pawns at or above the minimum are a prefix of it.
+        int shown = 0;
+        while (shown < s.ranked.Count && s.ranked[shown].level >= minLevel)
+        {
+            shown++;
+        }
+
+        const float top = 54f;
+        var outRect = new Rect(rect.x, rect.y + top, rect.width, rect.height - top);
+        if (shown == 0)
+        {
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(new Rect(outRect.x, outRect.y, outRect.width, 40f), "SGA_NoPawnsAtLevel".Translate(minLevel));
+            Text.Anchor = TextAnchor.UpperLeft;
+            return;
+        }
+
         const float rowHeight = 28f;
-        var outRect = new Rect(rect.x, rect.y + 26f, rect.width, rect.height - 26f);
-        var viewRect = new Rect(0f, 0f, outRect.width - 16f, s.ranked.Count * rowHeight);
+        const float iconSize = 20f;
+        var viewRect = new Rect(0f, 0f, outRect.width - 16f, shown * rowHeight);
         Widgets.BeginScrollView(outRect, ref rankScroll, viewRect);
-        for (int i = 0; i < s.ranked.Count; i++)
+        for (int i = 0; i < shown; i++)
         {
             var (pawn, level) = s.ranked[i];
             var row = new Rect(0f, i * rowHeight, viewRect.width, rowHeight);
@@ -254,9 +280,23 @@ public class Window_SkillGap : Window
                 Widgets.DrawLightHighlight(row);
             }
 
+            var passion = pawn.skills?.GetSkill(s.def)?.passion ?? Passion.None;
+
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(new Rect(row.x + 6f, row.y, 30f, row.height), (i + 1).ToString());
-            Widgets.Label(new Rect(row.x + 40f, row.y, 200f, row.height), pawn.LabelShortCap.Truncate(200f));
+
+            GUI.color = PassionColor(passion);
+            float nameWidth = 170f;
+            Widgets.Label(new Rect(row.x + 40f, row.y, nameWidth, row.height), pawn.LabelShortCap.Truncate(nameWidth));
+            GUI.color = Color.white;
+
+            // The game's major-passion icon already shows two flames, so one icon per pawn is enough.
+            if (passion != Passion.None)
+            {
+                GUI.DrawTexture(new Rect(row.x + 214f, row.y + (row.height - iconSize) / 2f, iconSize, iconSize),
+                    passion == Passion.Major ? SkillUI.PassionMajorIcon : SkillUI.PassionMinorIcon);
+            }
+
             Widgets.Label(new Rect(row.x + 250f, row.y, 30f, row.height), level.ToString());
             var bar = new Rect(row.x + 286f, row.y + 8f, row.width - 296f, row.height - 16f);
             Widgets.DrawBoxSolid(bar, new Color(1f, 1f, 1f, 0.08f));
@@ -265,13 +305,55 @@ public class Window_SkillGap : Window
             Text.Anchor = TextAnchor.UpperLeft;
 
             Widgets.DrawHighlightIfMouseover(row);
-            TooltipHandler.TipRegion(row, "SGA_ClickToJump".Translate(pawn.LabelShort));
+            string fullName = pawn.Name != null ? pawn.Name.ToStringFull : pawn.LabelCap;
+            TooltipHandler.TipRegion(row, fullName + " - " + passion.GetLabel() + "\n\n" + "SGA_ClickToJump".Translate(pawn.LabelShort));
             if (Widgets.ButtonInvisible(row))
             {
                 CameraJumper.TryJumpAndSelect(pawn);
             }
         }
         Widgets.EndScrollView();
+    }
+
+    // No passion keeps the default colour; the two passion levels are told apart by blue strength
+    // (kept bright enough to read on the game's dark UI).
+    private static Color PassionColor(Passion passion) => passion switch
+    {
+        Passion.Major => new Color(0.3f, 0.5f, 1f),
+        Passion.Minor => new Color(0.65f, 0.85f, 1f),
+        _ => Color.white,
+    };
+
+    private void DrawMinLevel(Rect rect)
+    {
+        Text.Font = GameFont.Small;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        const float labelWidth = 170f;
+        Widgets.Label(new Rect(rect.x, rect.y, labelWidth, rect.height), "SGA_MinLevelLabel".Translate());
+        TooltipHandler.TipRegion(new Rect(rect.x, rect.y, labelWidth + 100f, rect.height), "SGA_MinLevelTip".Translate());
+
+        int newLevel = minLevel;
+        float x = rect.x + labelWidth;
+        if (Widgets.ButtonText(new Rect(x, rect.y, 26f, rect.height), "-"))
+        {
+            newLevel--;
+        }
+        Text.Anchor = TextAnchor.MiddleCenter;
+        Widgets.Label(new Rect(x + 28f, rect.y, 36f, rect.height), minLevel.ToString());
+        Text.Anchor = TextAnchor.MiddleLeft;
+        if (Widgets.ButtonText(new Rect(x + 66f, rect.y, 26f, rect.height), "+"))
+        {
+            newLevel++;
+        }
+        Text.Anchor = TextAnchor.UpperLeft;
+
+        newLevel = Mathf.Clamp(newLevel, 0, MaxLevel);
+        if (newLevel != minLevel)
+        {
+            minLevel = newLevel;
+            SkillGapMod.Save();
+            rankScroll = Vector2.zero;
+        }
     }
 
     private void DrawOptions(Rect rect)
