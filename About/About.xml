@@ -3,7 +3,7 @@
   <name>Skill Gap Analyzer</name>
   <author>comdobby</author>
   <packageId>comdobby.SkillGapAnalyzer</packageId>
-  <modVersion>1.0.1</modVersion>
+  <modVersion>1.1.0</modVersion>
   <supportedVersions>
     <li>1.7</li>
   </supportedVersions>
@@ -11,7 +11,7 @@
 
 Features
 - Per-skill table: top 3 pawns, top-N average and gap (works with modded skills too).
-- Pick one skill to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them.
+- Pick one skill to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them. Set a minimum level to list only pawns at or above it. Pawns with a passion get a blue name and a flame icon, which helps when choosing who to train.
 - Optionally include slaves, prisoners and children. Babies are always left out, and pawns who can never do a skill are ignored for it.
 - With the mod enabled, the analysis icon button appears at the top right of the screen by default. You can drag it anywhere you like. No keyboard shortcut is assigned by default; set one yourself in Options > Keyboard config.
 - In Options > Mod settings you can lock the icon position, and the reset button puts it back at the default spot (top right).
@@ -23,7 +23,7 @@ How to read it: a low top-N average means the colony is weak at that skill. A bi
 
 기능
 - 스킬별 표: 상위 3명, 상위 N명 평균, 격차 (모드 스킬도 지원).
-- 스킬을 하나 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다.
+- 스킬을 하나 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다. 최소 레벨을 정해 그 이상인 정착민만 볼 수 있고, 열정이 있는 정착민은 이름이 파란색과 불꽃 아이콘으로 표시되어 훈련시킬 정착민을 고를 때 유용합니다.
 - 노예, 죄수, 아이를 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 정착민은 그 스킬에서 빠집니다.
 - 모드를 적용하면 분석 아이콘이 기본적으로 화면 오른쪽 위에 표시됩니다. 아이콘을 드래그해서 원하는 곳으로 옮길 수 있습니다. 기본 단축키는 없고, 옵션 > 키보드 설정에서 직접 지정합니다.
 - 설정 > 모드에서 아이콘 위치를 고정할 수 있고, 초기화 버튼으로 기본 위치(오른쪽 위)로 되돌릴 수 있습니다.
