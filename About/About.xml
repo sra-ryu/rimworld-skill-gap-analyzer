@@ -7,27 +7,34 @@
   <supportedVersions>
     <li>1.7</li>
   </supportedVersions>
-  <description>Analyzes your colonists' skills. As you recruit more and more colonists, it gets hard to tell which skills you are short on. You may have plenty of colonists but only one who is good at a certain skill, and if that colonist goes down or is away, nobody can do that work. This mod helps you catch that early. See the gap in skill level between your top N colonists and the average level at a glance, or check every colonist's level for a single skill as a ranking.
+  <description>Analyzes your pawns' skills. As you recruit more and more pawns, it gets hard to tell which skills you are short on. You may have plenty of pawns but only one who is good at a certain skill, and if that pawn goes down or is away, nobody can do that work. This mod helps you catch that early.
+
+See the gap in skill level between your top N pawns and the average level at a glance, or check every pawn's level for a single skill as a ranking. You can also check which pawns have a passion for a skill right in the single skill view.
 
 Features
-- Per-skill table: top 3 pawns, top-N average and gap (works with modded skills too).
-- Pick one skill to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them. Set a minimum level to list only pawns at or above it. Pawns with a passion get a blue name and a flame icon, which helps when choosing who to train.
+- Per-skill table: top 3 pawns, top-N average and gap (works with modded skills too). Hover a name to see the full name, click it to jump to that pawn.
+- Pick one skill to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them.
 - Optionally include slaves, prisoners and children. Babies are always left out, and pawns who can never do a skill are ignored for it.
 - With the mod enabled, the analysis icon button appears at the top right of the screen by default. You can drag it anywhere you like. No keyboard shortcut is assigned by default; set one yourself in Options > Keyboard config.
 - In Options > Mod settings you can lock the icon position, and the reset button puts it back at the default spot (top right).
 - Languages: English, Korean.
 
-How to read it: a low top-N average means the colony is weak at that skill. A big gap means the best pawns are far apart in level.
+New features
+- The single skill view also shows which pawns have a passion for that skill: their name is blue (light blue for one flame, strong blue for two) and a flame icon is shown next to it. This is a good guide when choosing who should get a neurotrainer.
+- You can also set a minimum level to list only the pawns at or above it.
 
-림월드에서 정착민들의 스킬을 분석해 주는 모드입니다. 게임을 진행하며 정착민을 여러 명 영입하다 보면, 어떤 스킬을 가진 정착민이 부족한지 헷갈릴 때가 있습니다. 정착민은 많은데 특정 스킬을 잘하는 정착민이 한 명뿐이라면, 그 정착민이 쓰러지거나 자리를 비웠을 때 해당 작업을 할 수 없게 될 수도 있습니다. 이 모드로 그런 상황을 미리 막을 수 있습니다. 상위 N명 사이의 스킬 레벨 격차와 평균 레벨을 바로 확인할 수 있고, 스킬별로 모든 정착민의 레벨을 순위로 볼 수도 있습니다.
+
+림월드에서 림들의 스킬을 분석해 주는 모드입니다. 게임을 진행하며 림을 여러 명 영입하다 보면, 어떤 스킬을 가진 림이 부족한지 헷갈릴 때가 있습니다. 림은 많은데 특정 스킬을 잘하는 림이 한 명뿐이라면, 그 림이 쓰러지거나 자리를 비웠을 때 해당 작업을 할 수 없게 될 수도 있습니다. 이 모드로 그런 상황을 미리 막을 수 있습니다. 상위 N명 사이의 스킬 레벨 격차와 평균 레벨을 바로 확인할 수 있고, 스킬별로 모든 림의 레벨을 순위로 볼 수도 있습니다. 개별 스킬창에서 해당 스킬에 열정을 가진 림을 확인하는 것도 가능합니다.
 
 기능
-- 스킬별 표: 상위 3명, 상위 N명 평균, 격차 (모드 스킬도 지원).
-- 스킬을 하나 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다. 최소 레벨을 정해 그 이상인 정착민만 볼 수 있고, 열정이 있는 정착민은 이름이 파란색과 불꽃 아이콘으로 표시되어 훈련시킬 정착민을 고를 때 유용합니다.
-- 노예, 죄수, 아이를 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 정착민은 그 스킬에서 빠집니다.
+- 스킬별 표: 상위 3명, 상위 N명 평균, 격차 (모드 스킬도 지원). 이름에 마우스를 올리면 전체 이름이 보이고, 누르면 해당 림으로 이동합니다.
+- 스킬을 하나 고르면 모든 림을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 림으로 이동합니다.
+- 노예, 죄수, 아이를 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 림은 그 스킬에서 빠집니다.
 - 모드를 적용하면 분석 아이콘이 기본적으로 화면 오른쪽 위에 표시됩니다. 아이콘을 드래그해서 원하는 곳으로 옮길 수 있습니다. 기본 단축키는 없고, 옵션 > 키보드 설정에서 직접 지정합니다.
 - 설정 > 모드에서 아이콘 위치를 고정할 수 있고, 초기화 버튼으로 기본 위치(오른쪽 위)로 되돌릴 수 있습니다.
 - 지원 언어: 영어, 한국어.
 
-보는 법: 상위 N명 평균이 낮으면 콜로니가 그 스킬에 약하다는 뜻이고, 격차가 크면 상위 정착민끼리 레벨 차이가 크다는 뜻입니다.</description>
+새로운 기능
+- 이제 개별 스킬 보기에서 해당 스킬에 열정을 가진 림을 확인할 수 있습니다. 열정이 있으면 이름이 파란색(열정 하나는 연한 파랑, 둘은 진한 파랑)과 불꽃 아이콘으로 표시됩니다. 이는 신경 교육 혈청을 누구에게 줘야 할지 선택할 때 좋은 기준이 될 수 있습니다.
+- 또한 기준 레벨에 맞춰 해당 레벨 이상의 림만 확인하는 것도 가능합니다.</description>
 </ModMetaData>
