@@ -8,6 +8,7 @@ A RimWorld mod that analyzes your colonists' skills. As you recruit more and mor
 
 - **Per-skill table**: Top 3 pawns (hover for full name, click to jump), top-N average and gap for every skill. Modded skills are included automatically.
 - **Single skill view**: Pick one skill from the dropdown to see every pawn ranked by level, with the top-N pawns highlighted. Click a pawn to jump to them.
+- **Minimum level and passions**: In the single skill view, set a minimum level to list only pawns at or above it. Pawns with a passion get a blue name and a flame icon (light blue for minor, strong blue for major), handy for picking who to train, for example with learning serums.
 - **Top-N focus**: Only your best N pawns matter for a skill, so a low top-N average means the colony is weak at it, and a big gap means the best pawns are far apart in level.
 - **Who is counted**: Free colonists, plus optional slaves, prisoners and children. Babies are always left out, and pawns who can never do a skill are ignored for it.
 - **Floating button or hotkey**: Open the window from a small icon button you can drag anywhere (top right by default), or switch to a keyboard shortcut in the mod settings. No key is assigned by default; set one in Options > Keyboard config.
@@ -85,6 +86,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 - **스킬별 표**: 모든 스킬의 상위 3명(마우스를 올리면 전체 이름, 클릭하면 해당 정착민으로 이동), 상위 N명 평균, 격차를 보여줍니다. 모드 스킬도 자동으로 포함됩니다.
 - **스킬 하나만 보기**: 드롭다운에서 스킬을 고르면 모든 정착민을 레벨 순으로 보여 주고, 상위 N명을 강조합니다. 이름을 누르면 해당 정착민으로 이동합니다.
+- **최소 레벨과 열정**: 스킬 하나만 볼 때 최소 레벨을 정하면 그 이상인 정착민만 표시합니다. 열정이 있는 정착민은 이름이 파란색(열정 하나는 연한 파랑, 둘은 진한 파랑)과 불꽃 아이콘으로 표시되어, 교육 혈청 등으로 키울 정착민을 고를 때 유용합니다.
 - **상위 N명 중심**: 스킬은 가장 잘하는 N명만 중요하므로, 상위 N명 평균이 낮으면 콜로니가 그 스킬에 약하다는 뜻이고 격차가 크면 상위 정착민끼리 레벨 차이가 크다는 뜻입니다.
 - **집계 대상**: 자유 정착민이 기본이고, 노예, 죄수, 아이를 선택해서 포함할 수 있습니다. 아기는 항상 제외되고, 해당 스킬을 아예 못 하는 정착민은 그 스킬에서 빠집니다.
 - **아이콘 버튼 또는 단축키**: 원하는 곳으로 옮길 수 있는 작은 아이콘 버튼(기본 위치는 오른쪽 위)으로 열거나, 모드 설정에서 키보드 단축키로 바꿀 수 있습니다. 기본 단축키는 없고, 옵션 > 키보드 설정에서 직접 지정합니다.
