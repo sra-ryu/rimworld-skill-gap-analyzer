@@ -16,6 +16,8 @@ A RimWorld mod that analyzes your colonists' skills. As you recruit more and mor
 
 ![Single skill](docs/screenshots/02-single-skill.jpg)
 
+![Minimum level and passions](docs/screenshots/03-min-level.jpg)
+
 ## Requirements
 
 - RimWorld **1.7** (Waylith Engine, currently on the Steam unstable beta branch)
@@ -93,6 +95,8 @@ This project is licensed under the [MIT License](LICENSE).
 - **설정 기억**: 필터, N, 선택한 스킬, 버튼 위치가 저장됩니다. 창의 초기화 버튼으로 기본 화면으로 되돌릴 수 있습니다.
 
 ![스킬 하나 보기](docs/screenshots/02-single-skill.jpg)
+
+![최소 레벨과 열정](docs/screenshots/03-min-level.jpg)
 
 ## 요구 사항
 
