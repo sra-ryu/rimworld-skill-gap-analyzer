@@ -10,7 +10,9 @@ namespace SkillGapAnalyzer;
 /// <summary>Standalone (non-tab) window showing the current skill gap, pick one skill or see them all.</summary>
 public class Window_SkillGap : Window
 {
-    private enum SortKey { Name, Min, Max, Avg, Gap }
+    private enum SortKey { Name, Max, Avg, Gap }
+
+    private const int TopShown = 3;
 
     private const float RowHeight = 34f;
     private const float HeaderHeight = 28f;
@@ -329,15 +331,14 @@ public class Window_SkillGap : Window
     // Column rects relative to a row's left edge.
     private static Rect[] Columns(float width)
     {
-        float skill = width * 0.18f;
-        float min = width * 0.24f;
-        float max = width * 0.24f;
-        float avg = width * 0.12f;
-        float gap = width - skill - min - max - avg;
+        float skill = width * 0.17f;
+        float top = width * 0.46f;
+        float avg = width * 0.11f;
+        float gap = width - skill - top - avg;
         float x = 0f;
-        var result = new Rect[5];
-        float[] widths = { skill, min, max, avg, gap };
-        for (int i = 0; i < 5; i++)
+        var result = new Rect[4];
+        float[] widths = { skill, top, avg, gap };
+        for (int i = 0; i < 4; i++)
         {
             result[i] = new Rect(x, 0f, widths[i], 0f);
             x += widths[i];
@@ -349,14 +350,14 @@ public class Window_SkillGap : Window
     {
         string[] labels =
         {
-            "SGA_ColSkill".Translate(), "SGA_ColLowest".Translate(), "SGA_ColHighest".Translate(),
+            "SGA_ColSkill".Translate(), "SGA_ColTop".Translate(TopShown),
             "SGA_ColAvgTop".Translate(), "SGA_ColGap".Translate()
         };
-        var keys = new[] { SortKey.Name, SortKey.Min, SortKey.Max, SortKey.Avg, SortKey.Gap };
+        var keys = new[] { SortKey.Name, SortKey.Max, SortKey.Avg, SortKey.Gap };
 
         Text.Font = GameFont.Small;
         Text.Anchor = TextAnchor.MiddleLeft;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < keys.Length; i++)
         {
             var cell = new Rect(rect.x + columns[i].x, rect.y, columns[i].width, rect.height);
             string arrow = sortKey == keys[i] ? (sortDescending ? " \u25BC" : " \u25B2") : "";
@@ -392,7 +393,6 @@ public class Window_SkillGap : Window
         IEnumerable<SkillStat> q = sortKey switch
         {
             SortKey.Name => stats.OrderBy(s => s.def.listOrder),
-            SortKey.Min => stats.OrderBy(s => s.min),
             SortKey.Max => stats.OrderBy(s => s.max),
             SortKey.Avg => stats.OrderBy(AvgValue),
             _ => stats.OrderBy(GapValue),
@@ -416,13 +416,12 @@ public class Window_SkillGap : Window
         Text.Anchor = TextAnchor.MiddleLeft;
 
         Widgets.Label(new Rect(row.x + columns[0].x + 6f, row.y, columns[0].width - 6f, row.height), s.def.skillLabel.CapitalizeFirst());
-        DrawPawnCell(CellRect(row, columns[1]), s.min, s.minPawns);
-        DrawPawnCell(CellRect(row, columns[2]), s.max, s.maxPawns);
+        DrawTopPawns(CellRect(row, columns[1]), s);
 
-        Widgets.Label(new Rect(row.x + columns[3].x + 6f, row.y, columns[3].width - 6f, row.height), AvgValue(s).ToString("F1"));
+        Widgets.Label(new Rect(row.x + columns[2].x + 6f, row.y, columns[2].width - 6f, row.height), AvgValue(s).ToString("F1"));
 
         // Gap: number + bar scaled to the max level.
-        var gapCell = CellRect(row, columns[4]);
+        var gapCell = CellRect(row, columns[3]);
         Widgets.Label(new Rect(gapCell.x + 6f, gapCell.y, 28f, gapCell.height), GapValue(s).ToString());
         TooltipHandler.TipRegion(gapCell, "SGA_GapTip".Translate(s.groupSize, s.max, s.topLow));
         var bar = new Rect(gapCell.x + 38f, gapCell.y + 10f, gapCell.width - 48f, row.height - 20f);
@@ -441,22 +440,32 @@ public class Window_SkillGap : Window
 
     private static Color GapColor(float fill) => Color.Lerp(new Color(0.35f, 0.7f, 0.4f), new Color(0.85f, 0.35f, 0.3f), fill);
 
-    private static void DrawPawnCell(Rect cell, int level, List<Pawn> list)
+    // Top few pawns side by side: "level name" each, name truncated to fit, full name on hover, click to jump.
+    private static void DrawTopPawns(Rect cell, SkillStat s)
     {
-        string names = list[0].LabelShort;
-        if (list.Count > 1)
+        int shown = Mathf.Min(TopShown, s.ranked.Count);
+        if (shown == 0)
         {
-            names += " " + "SGA_AndMore".Translate(list.Count - 1);
+            return;
         }
 
-        Widgets.Label(new Rect(cell.x + 6f, cell.y, 26f, cell.height), level.ToString());
-        Widgets.Label(new Rect(cell.x + 34f, cell.y, cell.width - 38f, cell.height), names.Truncate(cell.width - 38f));
-
-        Widgets.DrawHighlightIfMouseover(cell);
-        TooltipHandler.TipRegion(cell, string.Join(", ", list.Select(p => p.LabelShort)) + "\n\n" + "SGA_ClickToJump".Translate(list[0].LabelShort));
-        if (Widgets.ButtonInvisible(cell))
+        const float levelWidth = 22f;
+        float entryWidth = (cell.width - 6f) / TopShown;
+        for (int i = 0; i < shown; i++)
         {
-            CameraJumper.TryJumpAndSelect(list[0]);
+            var (pawn, level) = s.ranked[i];
+            var entry = new Rect(cell.x + 6f + entryWidth * i, cell.y, entryWidth - 4f, cell.height);
+            Widgets.Label(new Rect(entry.x, entry.y, levelWidth, entry.height), level.ToString());
+            float nameWidth = entry.width - levelWidth - 2f;
+            Widgets.Label(new Rect(entry.x + levelWidth, entry.y, nameWidth, entry.height), pawn.LabelShortCap.Truncate(nameWidth));
+
+            Widgets.DrawHighlightIfMouseover(entry);
+            string fullName = pawn.Name != null ? pawn.Name.ToStringFull : pawn.LabelCap;
+            TooltipHandler.TipRegion(entry, fullName + "\n\n" + "SGA_ClickToJump".Translate(pawn.LabelShort));
+            if (Widgets.ButtonInvisible(entry))
+            {
+                CameraJumper.TryJumpAndSelect(pawn);
+            }
         }
     }
 }

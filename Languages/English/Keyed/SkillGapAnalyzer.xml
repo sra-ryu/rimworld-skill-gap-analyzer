@@ -13,14 +13,12 @@
   <SGA_RankingNote>All pawns by level. Highlighted pawns are used for the average and gap.</SGA_RankingNote>
   <SGA_PawnCount>{0} pawns analyzed</SGA_PawnCount>
   <SGA_ColSkill>Skill</SGA_ColSkill>
-  <SGA_ColLowest>Lowest</SGA_ColLowest>
-  <SGA_ColHighest>Highest</SGA_ColHighest>
+  <SGA_ColTop>Top {0}</SGA_ColTop>
   <SGA_ColAvgTop>Top avg</SGA_ColAvgTop>
   <SGA_AvgTip>Average of the top N levels of the skill. Lower means the colony is weaker at it.</SGA_AvgTip>
   <SGA_ColGap>Gap</SGA_ColGap>
   <SGA_NoPawns>No pawns to analyze.</SGA_NoPawns>
   <SGA_ClickToJump>Click to jump to {0}.</SGA_ClickToJump>
-  <SGA_AndMore>+{0} more</SGA_AndMore>
   <SGA_ButtonTip>Open skill gap analysis</SGA_ButtonTip>
   <SGA_Reset>Reset</SGA_Reset>
   <SGA_ResetTip>Reset the view to its defaults: no slaves, prisoners or children, N = 3, all skills, default sorting.</SGA_ResetTip>

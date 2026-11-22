@@ -13,14 +13,12 @@
   <SGA_RankingNote>레벨 순 전체 정착민. 강조된 정착민이 평균과 갭 계산에 쓰입니다.</SGA_RankingNote>
   <SGA_PawnCount>{0}명 분석</SGA_PawnCount>
   <SGA_ColSkill>스킬</SGA_ColSkill>
-  <SGA_ColLowest>최저</SGA_ColLowest>
-  <SGA_ColHighest>최고</SGA_ColHighest>
+  <SGA_ColTop>상위 {0}명</SGA_ColTop>
   <SGA_ColAvgTop>상위 평균</SGA_ColAvgTop>
   <SGA_AvgTip>스킬별 상위 N명 레벨의 평균입니다. 낮을수록 정착지가 그 스킬에 약합니다.</SGA_AvgTip>
   <SGA_ColGap>갭</SGA_ColGap>
   <SGA_NoPawns>분석할 정착민이 없습니다.</SGA_NoPawns>
   <SGA_ClickToJump>클릭하면 {0}에게 이동합니다.</SGA_ClickToJump>
-  <SGA_AndMore>외 {0}명</SGA_AndMore>
   <SGA_ButtonTip>스킬 격차 분석 열기</SGA_ButtonTip>
   <SGA_Reset>초기화</SGA_Reset>
   <SGA_ResetTip>화면을 기본값으로 되돌립니다: 노예/죄수/아이 제외, N = 3, 전체 스킬, 기본 정렬.</SGA_ResetTip>
